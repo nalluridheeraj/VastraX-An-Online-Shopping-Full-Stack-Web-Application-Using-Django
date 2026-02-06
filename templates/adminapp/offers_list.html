@@ -1,0 +1,25 @@
+{% extends 'adminapp/base_admin.html' %}
+{% block title %}Offers{% endblock %}
+{% block content %}
+<h1 style="margin-bottom: 1rem;">Offers</h1>
+<p><a href="{% url 'adminapp:offer_add' %}" class="btn btn-primary">Add Offer</a></p>
+<table style="margin-top: 1rem;">
+  <thead>
+    <tr><th>Title</th><th>Product</th><th>Category</th><th>Discount %</th><th>Active</th><th>Actions</th></tr>
+  </thead>
+  <tbody>
+    {% for o in offers %}
+    <tr>
+      <td>{{ o.title }}</td>
+      <td>{{ o.product.name|default:"—" }}</td>
+      <td>{{ o.category.name|default:"—" }}</td>
+      <td>{{ o.discount_percent }}%</td>
+      <td>{{ o.is_active|yesno:"Yes,No" }}</td>
+      <td><a href="{% url 'adminapp:offer_edit' o.pk %}">Edit</a> | <a href="{% url 'adminapp:offer_delete' o.pk %}" style="color: #c53030;">Delete</a></td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="6">No offers.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

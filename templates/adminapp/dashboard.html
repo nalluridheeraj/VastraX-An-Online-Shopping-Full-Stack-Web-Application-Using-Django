@@ -1,0 +1,62 @@
+{% extends 'adminapp/base_admin.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h1 style="margin-bottom: 1.5rem;">Sales Dashboard</h1>
+<div class="stat-box">
+  <strong>Total Sales</strong><br>
+  ₹{{ total_sales|floatformat:0 }}
+</div>
+<div class="stat-box">
+  <strong>Total Orders</strong><br>
+  {{ total_orders }}
+</div>
+<h2 style="margin: 2rem 0 1rem;">Orders per Product</h2>
+<table>
+  <thead>
+    <tr><th>Product</th><th>Units Sold</th><th>Orders</th></tr>
+  </thead>
+  <tbody>
+    {% for row in orders_per_product %}
+    <tr>
+      <td>{{ row.product__name }}</td>
+      <td>{{ row.total_qty }}</td>
+      <td>{{ row.order_count }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="3">No data yet.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+<h2 style="margin: 2rem 0 1rem;">Recent Orders</h2>
+<table>
+  <thead>
+    <tr><th>Order #</th><th>Total</th><th>Status</th><th>Date</th><th></th></tr>
+  </thead>
+  <tbody>
+    {% for order in recent_orders %}
+    <tr>
+      <td>{{ order.order_number }}</td>
+      <td>₹{{ order.total }}</td>
+      <td>{{ order.status }}</td>
+      <td>{{ order.created_at|date:"d M Y" }}</td>
+      <td><a href="{% url 'adminapp:order_detail' order.order_number %}">View</a></td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="5">No orders yet.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+<h2 style="margin: 2rem 0 1rem;">Low Stock</h2>
+<table>
+  <thead>
+    <tr><th>Product</th><th>Stock</th></tr>
+  </thead>
+  <tbody>
+    {% for p in low_stock %}
+    <tr><td>{{ p.name }}</td><td>{{ p.stock }}</td></tr>
+    {% empty %}
+    <tr><td colspan="2">All good.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

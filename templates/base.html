@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}VastraX{% endblock %} | VastraX</title>
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+  <nav class="nav-bar">
+    <a href="{% url 'mainapp:home' %}" class="nav-logo-link" style="display: flex; align-items: center;">
+      <img src="{% static 'images/logo.jpg' %}" alt="VastraX" class="nav-logo" style="height: 150px; width: 150px; margin-right: 0.5rem;" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
+      <span class="nav-logo-text" style="display:none;">VastraX</span>
+    </a>
+    <div class="nav-links">
+      <a href="{% url 'mainapp:home' %}" class="{% if page == 'home' %}active{% endif %}">Home</a>
+      <a href="{% url 'mainapp:collections' %}" class="{% if page == 'collections' %}active{% endif %}">Collections</a>
+      <a href="{% url 'mainapp:collection_mens' %}" class="{% if page == 'collection_mens' %}active{% endif %}">Men</a>
+      <a href="{% url 'mainapp:collection_womens' %}" class="{% if page == 'collection_womens' %}active{% endif %}">Women</a>
+      <a href="{% url 'mainapp:collection_kids' %}" class="{% if page == 'collection_kids' %}active{% endif %}">Kids</a>
+      <a href="{% url 'mainapp:about' %}" class="{% if page == 'about' %}active{% endif %}">About</a>
+      <a href="{% url 'mainapp:contact' %}" class="{% if page == 'contact' %}active{% endif %}">Contact</a>
+      {% if request.session.admin_logged_in %}
+        <a href="{% url 'adminapp:dashboard' %}">Admin</a>
+        <a href="{% url 'userapp:logout' %}" class="btn btn-outline">Logout</a>
+      {% elif request.session.user_id %}
+        <a href="{% url 'userapp:cart' %}" class="{% if page == 'cart' %}active{% endif %}">Cart ({{ cart_count|default:0 }})</a>
+        <a href="{% url 'userapp:orders' %}" class="{% if page == 'orders' %}active{% endif %}">Orders</a>
+        <a href="{% url 'userapp:logout' %}" class="btn btn-outline">Logout</a>
+      {% else %}
+        <a href="{% url 'userapp:login' %}" class="{% if page == 'login' %}active{% endif %}">Login</a>
+        <a href="{% url 'userapp:register' %}" class="btn btn-primary">Join Now</a>
+      {% endif %}
+    </div>
+  </nav>
+
+  {% if messages %}
+  <ul class="messages">
+    {% for message in messages %}
+    <li class="{{ message.tags }}">{{ message }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+  <div class="page-wrap {% block page_wrap_class %}{% endblock %}" {% block page_bg_attr %}{% endblock %}>
+    <div class="page-content">
+      {% block content %}{% endblock %}
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <p>&copy; {% now "Y" %} VastraX. All rights reserved.</p>
+  </footer>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

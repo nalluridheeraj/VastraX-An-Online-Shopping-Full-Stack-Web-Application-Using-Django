@@ -1,0 +1,24 @@
+{% extends 'adminapp/base_admin.html' %}
+{% block title %}Orders{% endblock %}
+{% block content %}
+<h1 style="margin-bottom: 1rem;">Orders</h1>
+<table>
+  <thead>
+    <tr><th>Order #</th><th>User</th><th>Total</th><th>Status</th><th>Date</th><th></th></tr>
+  </thead>
+  <tbody>
+    {% for order in orders %}
+    <tr>
+      <td>{{ order.order_number }}</td>
+      <td>{{ order.user.name }} ({{ order.user.email }})</td>
+      <td>₹{{ order.total }}</td>
+      <td>{{ order.status }}</td>
+      <td>{{ order.created_at|date:"d M Y H:i" }}</td>
+      <td><a href="{% url 'adminapp:order_detail' order.order_number %}">View</a></td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="6">No orders.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

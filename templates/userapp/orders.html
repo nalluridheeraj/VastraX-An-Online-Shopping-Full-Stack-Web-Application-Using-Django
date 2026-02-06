@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}My Orders{% endblock %}
+{% block page_bg_attr %}style="background-image: url('{% static 'images/home-bg.jpg' %}');"{% endblock %}
+{% block page_wrap_class %}overlay{% endblock %}
+
+{% block content %}
+<div class="container" style="padding: 2rem 1.5rem;">
+  <h1 style="color: var(--primary); margin-bottom: 1.5rem;">My Orders</h1>
+  <div style="display: grid; gap: 1rem;">
+    {% for order in orders %}
+    {% with items=order.orderitem_set.all %}
+    <a href="{% url 'userapp:order_detail' order.order_number %}" class="form-box order-card">
+      {% if items %}
+        {% for order_item in items %}
+          {% if forloop.first and order_item.product.image %}
+          <img src="{{ order_item.product.image.url }}" alt="{{ order_item.product.name }}" class="order-card-thumb">
+          {% elif forloop.first %}
+          <div class="order-card-thumb-placeholder"></div>
+          {% endif %}
+        {% endfor %}
+      {% else %}
+      <div class="order-card-thumb-placeholder"></div>
+      {% endif %}
+      <div class="order-card-info">
+        <div class="order-card-line">
+          <strong>{{ order.order_number }}</strong> — ₹{{ order.total }} — {{ order.status }}
+        </div>
+        <div class="order-card-sub">
+          {{ order.created_at|date:"d M Y" }} • {{ items|length }} item{% if items|length != 1 %}s{% endif %}
+        </div>
+      </div>
+    </a>
+    {% endwith %}
+    {% empty %}
+    <p>No orders yet.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
+

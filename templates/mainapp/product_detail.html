@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ product.name }}{% endblock %}
+{% block page_bg_attr %}style="background-image: url('{% static 'images/collections-bg.jpg' %}');"{% endblock %}
+{% block page_wrap_class %}overlay{% endblock %}
+
+{% block content %}
+<div class="container" style="padding: 2rem 1.5rem;">
+  <div class="form-box" style="max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start;">
+    <div>
+      {% if product.image %}
+      <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width: 100%; border-radius: var(--radius);">
+      {% else %}
+      <div style="height: 400px; background: #e2e8f0; border-radius: var(--radius); display: flex; align-items: center; justify-content: center;">No image</div>
+      {% endif %}
+    </div>
+    <div>
+      <h1 style="color: var(--primary); margin-bottom: 0.5rem;">{{ product.name }}</h1>
+      <p class="product-card-rating">★ {{ product.rating }} &nbsp; {{ product.get_gender_display }} · {{ product.get_product_type_display }}</p>
+      <p style="font-size: 1.5rem; font-weight: 700; color: var(--primary); margin: 1rem 0;">₹{{ product.price }}</p>
+      {% if offers %}
+      <p style="color: var(--accent); font-weight: 600;">Offers: {% for o in offers %}{{ o.title }} ({{ o.discount_percent }}% off){% if not forloop.last %}, {% endif %}{% endfor %}</p>
+      {% endif %}
+      <p style="margin: 1rem 0;">{{ product.description|default:"No description." }}</p>
+      {% if product.stock > 0 %}
+      <a href="{% url 'userapp:cart_add' product.pk %}" class="btn btn-primary">Add to Cart</a>
+      <span style="margin-left: 0.5rem; color: var(--text-muted);">In stock: {{ product.stock }}</span>
+      {% else %}
+      <p style="color: #c53030;">Out of stock</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

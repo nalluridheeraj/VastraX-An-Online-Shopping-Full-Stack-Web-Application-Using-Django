@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Verify OTP{% endblock %}
+{% block page_bg_attr %}style="background-image: url('{% static 'images/login-bg.jpg' %}');"{% endblock %}
+{% block page_wrap_class %}overlay{% endblock %}
+
+{% block content %}
+<div style="min-height: calc(100vh - var(--nav-height)); display: flex; align-items: center; justify-content: flex-end; padding: 2rem 4rem;">
+  <div class="form-box">
+    <h1>Enter OTP</h1>
+    <p style="margin-bottom: 1rem; color: var(--text-muted);">We sent a code to {{ email }}</p>
+    <form method="post" action="{% url 'userapp:otp_verify' %}">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="otp">OTP</label>
+        <input type="text" id="otp" name="otp" required placeholder="6-digit code" maxlength="6" pattern="[0-9]*">
+      </div>
+      <button type="submit" class="btn btn-primary" style="width: 100%;">Verify & Login</button>
+    </form>
+    <p style="margin-top: 1rem; font-size: 0.9rem;">
+      <a href="{% url 'userapp:login' %}">Back to Login</a>
+    </p>
+  </div>
+</div>
+{% endblock %}

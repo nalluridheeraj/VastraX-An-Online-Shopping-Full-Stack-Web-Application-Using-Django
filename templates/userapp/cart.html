@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Cart{% endblock %}
+{% block page_bg_attr %}style="background-image: url('{% static 'images/collections-bg.jpg' %}');"{% endblock %}
+{% block page_wrap_class %}overlay{% endblock %}
+
+{% block content %}
+<div class="container page-section">
+  <h1 class="section-title">Your Cart</h1>
+  {% if items %}
+  <div class="cart-list">
+    {% for item in items %}
+    <div class="form-box cart-item">
+      {% if item.product.image %}
+      <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="cart-item-thumb">
+      {% else %}
+      <div class="cart-item-thumb-placeholder"></div>
+      {% endif %}
+      <div class="cart-item-main">
+        <strong>{{ item.product.name }}</strong>
+        <p>₹{{ item.product.price }} × {{ item.quantity }} = ₹{{ item.subtotal }}</p>
+      </div>
+      <form method="post" action="{% url 'userapp:cart_update' item.pk %}" class="cart-item-actions">
+        {% csrf_token %}
+        <input type="number" name="quantity" value="{{ item.quantity }}" min="1" max="{{ item.product.stock }}" class="cart-item-qty-input">
+        <button type="submit" class="btn btn-outline btn-sm">Update</button>
+      </form>
+      <a href="{% url 'userapp:cart_remove' item.pk %}" class="btn btn-danger btn-sm">Remove</a>
+    </div>
+    {% endfor %}
+  </div>
+  <div class="form-box cart-summary">
+    <p><strong>Subtotal: ₹{{ subtotal }}</strong></p>
+    <a href="{% url 'userapp:checkout' %}" class="btn btn-primary btn-full" style="margin-top: 0.5rem;">Proceed to Checkout</a>
+  </div>
+  {% else %}
+  <p>Your cart is empty. <a href="{% url 'mainapp:collections' %}">Browse collections</a>.</p>
+  {% endif %}
+</div>
+{% endblock %}
+

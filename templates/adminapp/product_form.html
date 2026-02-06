@@ -1,0 +1,32 @@
+{% extends 'adminapp/base_admin.html' %}
+{% block title %}{% if product %}Edit{% else %}Add{% endif %} Product{% endblock %}
+{% block content %}
+<h1>{% if product %}Edit Product{% else %}Add Product{% endif %}</h1>
+<form method="post" enctype="multipart/form-data" style="max-width: 500px; margin-top: 1rem;">
+  {% csrf_token %}
+  <div class="form-group"><label>Name</label><input type="text" name="name" value="{{ product.name|default:'' }}" required></div>
+  <div class="form-group"><label>Description</label><textarea name="description" rows="3">{{ product.description|default:'' }}</textarea></div>
+  <div class="form-group"><label>Price</label><input type="number" name="price" step="0.01" value="{{ product.price|default:'' }}" required></div>
+  <div class="form-group"><label>Stock</label><input type="number" name="stock" value="{{ product.stock|default:0 }}" required></div>
+  <div class="form-group"><label>Gender</label><select name="gender"><option value="men" {% if product.gender == 'men' %}selected{% endif %}>Men</option><option value="women" {% if product.gender == 'women' %}selected{% endif %}>Women</option><option value="kids" {% if product.gender == 'kids' %}selected{% endif %}>Kids</option></select></div>
+  <div class="form-group"><label>Product Type</label><select name="product_type">
+    <option value="tshirt" {% if product.product_type == 'tshirt' %}selected{% endif %}>T-Shirt</option>
+    <option value="shirt" {% if product.product_type == 'shirt' %}selected{% endif %}>Shirt</option>
+    <option value="saree" {% if product.product_type == 'saree' %}selected{% endif %}>Saree</option>
+    <option value="pyjama" {% if product.product_type == 'pyjama' %}selected{% endif %}>Pyjama</option>
+    <option value="jeans" {% if product.product_type == 'jeans' %}selected{% endif %}>Jeans</option>
+    <option value="kurta" {% if product.product_type == 'kurta' %}selected{% endif %}>Kurta</option>
+    <option value="dress" {% if product.product_type == 'dress' %}selected{% endif %}>Dress</option>
+    <option value="lehenga" {% if product.product_type == 'lehenga' %}selected{% endif %}>Lehenga</option>
+    <option value="blouse" {% if product.product_type == 'blouse' %}selected{% endif %}>Blouse</option>
+    <option value="trouser" {% if product.product_type == 'trouser' %}selected{% endif %}>Trouser</option>
+    <option value="jacket" {% if product.product_type == 'jacket' %}selected{% endif %}>Jacket</option>
+    <option value="other" {% if product.product_type == 'other' or not product %}selected{% endif %}>Other</option>
+  </select></div>
+  <div class="form-group"><label>Category</label><select name="category"><option value="">—</option>{% for c in categories %}<option value="{{ c.pk }}" {% if product.category_id == c.pk %}selected{% endif %}>{{ c.name }}</option>{% endfor %}</select></div>
+  <div class="form-group"><label>Rating (0-5)</label><input type="number" name="rating" step="0.1" min="0" max="5" value="{{ product.rating|default:0 }}"></div>
+  <div class="form-group"><label>Image</label><input type="file" name="image" accept="image/*">{% if product.image %}<br><small>Current: {{ product.image.name }}</small>{% endif %}</div>
+  <button type="submit" class="btn btn-primary">Save</button>
+  <a href="{% url 'adminapp:products_list' %}" class="btn btn-outline" style="margin-left: 0.5rem;">Cancel</a>
+</form>
+{% endblock %}

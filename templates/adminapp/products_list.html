@@ -1,0 +1,29 @@
+{% extends 'adminapp/base_admin.html' %}
+{% block title %}Products{% endblock %}
+{% block content %}
+<h1 style="margin-bottom: 1rem;">Products</h1>
+<p><a href="{% url 'adminapp:product_add' %}" class="btn btn-primary">Add Product</a></p>
+<table style="margin-top: 1rem;">
+  <thead>
+    <tr><th>Image</th><th>Name</th><th>Price</th><th>Stock</th><th>Gender</th><th>Type</th><th>Actions</th></tr>
+  </thead>
+  <tbody>
+    {% for p in products %}
+    <tr>
+      <td>{% if p.image %}<img src="{{ p.image.url }}" alt="" style="width: 50px; height: 50px; object-fit: cover;">{% else %}—{% endif %}</td>
+      <td>{{ p.name }}</td>
+      <td>₹{{ p.price }}</td>
+      <td>{{ p.stock }}</td>
+      <td>{{ p.get_gender_display }}</td>
+      <td>{{ p.get_product_type_display }}</td>
+      <td>
+        <a href="{% url 'adminapp:product_edit' p.pk %}" class="btn btn-outline" style="padding: 0.3rem 0.6rem;">Edit</a>
+        <a href="{% url 'adminapp:product_delete' p.pk %}" class="btn" style="padding: 0.3rem 0.6rem; background: #fed7d7; color: #c53030;">Delete</a>
+      </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="7">No products.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

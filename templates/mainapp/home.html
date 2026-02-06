@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Home{% endblock %}
+{% block page_bg_attr %}style="background-image: url('{% static 'images/home-bg.jpg' %}');"{% endblock %}
+{% block page_wrap_class %}overlay{% endblock %}
+
+{% block content %}
+<div class="container" style="padding: 3rem 1.5rem;">
+  <section style="text-align: center; padding: 2rem 0;">
+    <h1 style="font-size: 2.5rem; color: var(--primary); margin-bottom: 1rem;">Welcome to VastraX</h1>
+    <p style="font-size: 1.2rem; color: var(--text-muted); max-width: 600px; margin: 0 auto 2rem;">Your one-stop destination for fashion. Explore collections for Men, Women & Kids.</p>
+    <a href="{% url 'mainapp:collections' %}" class="btn btn-primary">Shop Collections</a>
+  </section>
+  <section style="padding: 2rem 0;">
+    <h2 style="text-align: center; color: var(--primary); margin-bottom: 1.5rem;">Shop by Category</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; max-width: 800px; margin: 0 auto;">
+      <a href="{% url 'mainapp:collection_mens' %}" class="product-card" style="text-decoration: none; color: inherit; text-align: center;">
+        <div style="height: 160px; background-image: url('{% static 'images/mens-bg.jpg' %}'); background-size: cover; background-position: center; border-radius: 12px; margin-bottom: 0.5rem;"></div>
+        <strong>Men's Wear</strong>
+      </a>
+      <a href="{% url 'mainapp:collection_womens' %}" class="product-card" style="text-decoration: none; color: inherit; text-align: center;">
+        <div style="height: 160px; background-image: url('{% static 'images/womens-bg.jpg' %}');background-size: cover; background-position: center; border-radius: var(--radius); margin-bottom: 0.5rem;"></div>
+        <strong>Women's Wear</strong>
+      </a>
+      <a href="{% url 'mainapp:collection_kids' %}" class="product-card" style="text-decoration: none; color: inherit; text-align: center;">
+        <div style="height: 160px; background-image: url('{% static 'images/kids-bg.jpg' %}');background-size: cover; background-position: center; border-radius: var(--radius); margin-bottom: 0.5rem;"></div>
+        <strong>Kids</strong>
+      </a>
+    </div>
+  </section>
+</div>
+{% endblock %}

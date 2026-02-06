@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Addresses{% endblock %}
+{% block page_bg_attr %}style="background-image: url('{% static 'images/home-bg.jpg' %}');"{% endblock %}
+{% block page_wrap_class %}overlay{% endblock %}
+
+{% block content %}
+<div class="container" style="padding: 2rem 1.5rem;">
+  <h1 style="color: var(--primary); margin-bottom: 1rem;">Your Addresses</h1>
+  <div style="margin-bottom: 1.5rem;">
+    <button type="button" onclick="document.getElementById('add-form').style.display = document.getElementById('add-form').style.display === 'none' ? 'block' : 'none';" class="btn btn-primary">Add New Address</button>
+  </div>
+  <div id="add-form" class="form-box" style="display: none; margin-bottom: 1.5rem;">
+    <h2>Add Address</h2>
+    <form method="post" action="{% url 'userapp:address_add' %}">
+      {% csrf_token %}
+      <div class="form-group"><label>Full name</label><input type="text" name="full_name" required></div>
+      <div class="form-group"><label>Phone</label><input type="text" name="phone" required></div>
+      <div class="form-group"><label>Address line 1</label><input type="text" name="address_line1" required></div>
+      <div class="form-group"><label>Address line 2</label><input type="text" name="address_line2"></div>
+      <div class="form-group"><label>City</label><input type="text" name="city" required></div>
+      <div class="form-group"><label>State</label><input type="text" name="state" required></div>
+      <div class="form-group"><label>Pincode</label><input type="text" name="pincode" required></div>
+      <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+  </div>
+  <div style="display: grid; gap: 1rem;">
+    {% for addr in addresses %}
+    <div class="form-box" style="display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap;">
+      <div>
+        <strong>{{ addr.full_name }}</strong> {% if addr.is_default %}(Default){% endif %}<br>
+        {{ addr.address_line1 }}{% if addr.address_line2 %}, {{ addr.address_line2 }}{% endif %}<br>
+        {{ addr.city }}, {{ addr.state }} - {{ addr.pincode }}<br>
+        Phone: {{ addr.phone }}
+      </div>
+      <div style="display: flex; gap: 0.5rem;">
+        <a href="{% url 'userapp:address_edit' addr.pk %}" class="btn btn-outline">Edit</a>
+        <a href="{% url 'userapp:address_delete' addr.pk %}" class="btn" style="background: #fed7d7; color: #c53030;">Delete</a>
+      </div>
+    </div>
+    {% empty %}
+    <p>No addresses. Add one above.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

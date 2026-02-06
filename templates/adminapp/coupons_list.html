@@ -1,0 +1,26 @@
+{% extends 'adminapp/base_admin.html' %}
+{% block title %}Coupons{% endblock %}
+{% block content %}
+<h1 style="margin-bottom: 1rem;">Coupons</h1>
+<p><a href="{% url 'adminapp:coupon_add' %}" class="btn btn-primary">Add Coupon</a></p>
+<table style="margin-top: 1rem;">
+  <thead>
+    <tr><th>Code</th><th>Type</th><th>Value</th><th>Min Order</th><th>Used</th><th>Active</th><th>Actions</th></tr>
+  </thead>
+  <tbody>
+    {% for c in coupons %}
+    <tr>
+      <td>{{ c.code }}</td>
+      <td>{{ c.discount_type }}</td>
+      <td>{% if c.discount_type == 'percent' %}{{ c.discount_value }}%{% else %}₹{{ c.discount_value }}{% endif %}</td>
+      <td>₹{{ c.min_order_value }}</td>
+      <td>{{ c.used_count }}{% if c.max_uses %}/{{ c.max_uses }}{% endif %}</td>
+      <td>{{ c.is_active|yesno:"Yes,No" }}</td>
+      <td><a href="{% url 'adminapp:coupon_edit' c.pk %}">Edit</a> | <a href="{% url 'adminapp:coupon_delete' c.pk %}" style="color: #c53030;">Delete</a></td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="7">No coupons.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

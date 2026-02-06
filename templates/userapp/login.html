@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Login{% endblock %}
+{% block page_bg_attr %}style="background-image: url('{% static 'images/login-bg.jpg' %}');"{% endblock %}
+{% block page_wrap_class %}overlay{% endblock %}
+
+{% block content %}
+<div style="min-height: calc(100vh - var(--nav-height)); display: flex; align-items: center; justify-content: flex-end; padding: 2rem 4rem;">
+  <div class="form-box">
+    <h1>Login</h1>
+    <p style="margin-bottom: 1rem; color: var(--text-muted);">Sign in with your email via OTP.</p>
+    <form method="post" action="{% url 'userapp:otp_send' %}">
+      {% csrf_token %}
+      <div class="form-group">
+        <label>Login as</label>
+        <select name="login_as" required>
+          <option value="user">User</option>
+          <option value="admin">Admin / Manager</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required placeholder="your@email.com">
+      </div>
+      <button type="submit" class="btn btn-primary" style="width: 100%;">Send OTP</button>
+    </form>
+    <p style="margin-top: 1rem; font-size: 0.9rem;">
+      New here? <a href="{% url 'userapp:register' %}">Join Now</a>
+    </p>
+  </div>
+</div>
+{% endblock %}

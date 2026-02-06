@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Dashboard{% endblock %}
+{% block page_bg_attr %}style="background-image: url('{% static 'images/home-bg.jpg' %}');"{% endblock %}
+{% block page_wrap_class %}overlay{% endblock %}
+
+{% block content %}
+<div class="container" style="padding: 2rem 1.5rem;">
+  <div class="form-box" style="max-width: 640px;">
+    <h1>Hi, {{ user.name }}</h1>
+    <p style="margin-bottom: 1rem;">Email: {{ user.email }}</p>
+    <p style="margin-bottom: 1.5rem;"><a href="{% url 'userapp:addresses' %}" class="btn btn-outline">Manage Addresses</a></p>
+    <h2 style="font-size: 1.25rem; margin-bottom: 0.75rem;">Recent Orders</h2>
+    {% for order in recent_orders %}
+    <p><a href="{% url 'userapp:order_detail' order.order_number %}">{{ order.order_number }}</a> — ₹{{ order.total }} ({{ order.status }})</p>
+    {% empty %}
+    <p>No orders yet.</p>
+    {% endfor %}
+    <p style="margin-top: 1rem;"><a href="{% url 'userapp:orders' %}" class="btn btn-primary">View All Orders</a></p>
+  </div>
+</div>
+{% endblock %}

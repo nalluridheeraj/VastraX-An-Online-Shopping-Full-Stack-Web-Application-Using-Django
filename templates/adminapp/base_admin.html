@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Admin{% endblock %} | VastraX Admin</title>
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  <style>
+    body { background: #f1f5f9; }
+    .admin-nav { background: #1e293b; color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+    .admin-nav a { color: #e2e8f0; text-decoration: none; margin-right: 1rem; }
+    .admin-nav a:hover { color: white; }
+    .admin-content { padding: 2rem; max-width: 1400px; margin: 0 auto; }
+    table { width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+    th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid #e2e8f0; }
+    th { background: #1e293b; color: white; }
+    .stat-box { background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); display: inline-block; margin-right: 1rem; margin-bottom: 1rem; }
+  </style>
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+  <nav class="admin-nav">
+    <div>
+      <a href="{% url 'adminapp:dashboard' %}">Dashboard</a>
+      <a href="{% url 'adminapp:products_list' %}">Products</a>
+      <a href="{% url 'adminapp:orders_list' %}">Orders</a>
+      <a href="{% url 'adminapp:users_list' %}">Users</a>
+      <a href="{% url 'adminapp:coupons_list' %}">Coupons</a>
+      <a href="{% url 'adminapp:offers_list' %}">Offers</a>
+    </div>
+    <div>
+      <a href="{% url 'mainapp:home' %}">View Site</a>
+      <a href="{% url 'userapp:logout' %}">Logout</a>
+    </div>
+  </nav>
+  {% if messages %}
+  <ul class="messages" style="margin: 1rem 2rem;">
+    {% for message in messages %}
+    <li class="{{ message.tags }}">{{ message }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+  <div class="admin-content">
+    {% block content %}{% endblock %}
+  </div>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

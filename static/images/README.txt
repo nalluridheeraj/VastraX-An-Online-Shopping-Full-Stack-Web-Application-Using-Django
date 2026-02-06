@@ -1,0 +1,11 @@
+Place your images here:
+- logo.png          (navbar logo)
+- login-bg.jpg      (login page background)
+- register-bg.jpg   (register page background)
+- home-bg.jpg       (home page background)
+- about-bg.jpg      (about page background)
+- contact-bg.jpg    (contact page background)
+- collections-bg.jpg (collections / product detail background)
+- mens-bg.jpg       (men's collection blur background)
+- womens-bg.jpg     (women's collection blur background)
+- kids-bg.jpg       (kids collection - or leave default light theme image)

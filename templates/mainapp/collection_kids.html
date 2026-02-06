@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Kids Collection{% endblock %}
+{% block page_bg_attr %}style="background-image: url('{% static 'images/kids-bg.jpg' %}');"{% endblock %}
+{% block page_wrap_class %}overlay{% endblock %}
+
+{% block content %}
+<div class="collection-hero" style="background-image: url('https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=1200');">
+  <h1>Kids</h1>
+</div>
+<div class="container page-section">
+  <div class="collection-filters">
+    <form method="get" action="" class="collection-filters-form">
+      <select name="sort" onchange="this.form.submit()" class="filter-select">
+        <option value="">Sort by</option>
+        <option value="price_asc" {% if current_sort == 'price_asc' %}selected{% endif %}>Price: Low to High</option>
+        <option value="price_desc" {% if current_sort == 'price_desc' %}selected{% endif %}>Price: High to Low</option>
+        <option value="rating" {% if current_sort == 'rating' %}selected{% endif %}>Rating</option>
+      </select>
+      <select name="type" onchange="this.form.submit()" class="filter-select">
+        <option value="">All types</option>
+        <option value="tshirt" {% if current_type == 'tshirt' %}selected{% endif %}>T-Shirt</option>
+        <option value="dress" {% if current_type == 'dress' %}selected{% endif %}>Dress</option>
+        <option value="other" {% if current_type == 'other' %}selected{% endif %}>Other</option>
+      </select>
+    </form>
+  </div>
+  <div class="product-grid">
+    {% for product in products %}
+    <div class="product-card">
+      <a href="{% url 'mainapp:product_detail' product.pk %}" style="text-decoration: none; color: inherit; display: block;">
+        {% if product.image %}
+        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+        {% else %}
+        <div style="height: 280px; background: rgba(255,255,255,0.9); display: flex; align-items: center; justify-content: center; color: var(--text-muted);">No image</div>
+        {% endif %}
+        <div class="product-card-body">
+          <div class="product-card-title">{{ product.name }}</div>
+          <div class="product-card-price">₹{{ product.price }}</div>
+          <div class="product-card-rating">★ {{ product.rating }}</div>
+        </div>
+      </a>
+      <div class="product-card-actions">
+        <a href="{% url 'userapp:cart_add' product.pk %}" class="btn btn-primary btn-full">Add to Cart</a>
+      </div>
+    </div>
+    {% empty %}
+    <p style="grid-column: 1/-1; text-align: center;">No products in this collection.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
+
