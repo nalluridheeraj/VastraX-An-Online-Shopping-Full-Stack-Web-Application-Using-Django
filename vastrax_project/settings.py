@@ -6,9 +6,11 @@ import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-vastrax-dev-key-change-in-production'
-DEBUG = True
-ALLOWED_HOSTS = ['*']
+SECRET_KEY = os.environ.get('SECRET_KEY')
+
+DEBUG = False
+ALLOWED_HOSTS = ['vastrax.onrender.com']
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -24,14 +26,18 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
     'adminapp.middleware.AdminAccessMiddleware',
 ]
+
 
 ROOT_URLCONF = 'vastrax_project.urls'
 TEMPLATES = [
@@ -54,15 +60,11 @@ WSGI_APPLICATION = 'vastrax_project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'vastrax_db',
-        'USER': 'root',
-        'PASSWORD': 'root',
-        'HOST': '127.0.0.1',
-        'PORT': '3308',
-        'OPTIONS': {'charset': 'utf8mb4'},
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
 
 # Email (configure for OTP and welcome mail)
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -71,8 +73,9 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 
-EMAIL_HOST_USER = 'subwaysurfersxyz@gmail.com'
-EMAIL_HOST_PASSWORD = 'boazzopnbpxjkghh'
+EMAIL_HOST_USER = yourgmail@gmail.com
+EMAIL_HOST_PASSWORD = your-app-password
+
 DEFAULT_FROM_EMAIL = 'VastraX <noreply@vastrax.com>'
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -90,6 +93,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')] if os.path.exists(os.path.join(BASE_DIR, 'static')) else []
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
